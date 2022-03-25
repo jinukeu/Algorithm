@@ -1,9 +1,4 @@
-import java.util.*
 import kotlin.math.*
-
-class Main {}
-
-const val INF = 1e9.toInt()
 
 fun main(args: Array<String>) {
     val t = readln().toInt()
@@ -44,4 +39,3 @@ fun acm() {
 
     println(dp[w])
 }
-
