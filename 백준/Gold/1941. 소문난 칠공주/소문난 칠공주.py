@@ -14,9 +14,14 @@ for comb in combinations(items, 7):
     visited.add(comb[0])
     que = deque()
     que.append(comb[0])
+    s = y = 0
     
     while que:
         i, j = que.pop()
+        if graph[i][j] == 'S':
+            s += 1
+        else:
+            y += 1
         for di, dj in ((0, 1), (1, 0), (-1, 0), (0, -1)):
             ni, nj = i + di, j + dj
             if (ni, nj) in visited: continue
@@ -24,11 +29,6 @@ for comb in combinations(items, 7):
                 visited.add((ni, nj))
                 que.append((ni, nj))
     
-    if len(visited) == 7:
-        s = 0
-        for a, b in comb:
-            if graph[a][b] == 'S':
-                s += 1
-        if s > 3:
-            cnt += 1
-print(cnt) 
+    if s > 3 and s + y == 7:
+        cnt += 1
+print(cnt)
