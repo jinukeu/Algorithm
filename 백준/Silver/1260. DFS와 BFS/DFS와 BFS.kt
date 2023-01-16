@@ -43,15 +43,16 @@ fun dfs(start: Int) {
 fun bfs(start: Int) {
     val queue = ArrayDeque<Int>()
     queue.add(start)
+    visited[start] = true
 
     while (queue.isNotEmpty()) {
         val next = queue.removeFirst()
-        if(visited[next]) continue
-        visited[next] = true
 
         answerBfs += "$next "
 
         for(node in graph[next]) {
+            if(visited[node]) continue
+            visited[node] = true
             queue.add(node)
         }
     }
