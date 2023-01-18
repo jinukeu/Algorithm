@@ -42,17 +42,21 @@ fun dfs(start: Int) {
 
 fun bfs(start: Int) {
     val queue = ArrayDeque<Int>()
-    queue.add(start)
+    queue.add(start) // 1. 탐색 시작 노드를 큐에 삽입하고
+    visited[start] = true // 1. 방문 처리
 
     while (queue.isNotEmpty()) {
-        val next = queue.removeFirst()
-        if(visited[next]) continue
-        visited[next] = true
+        val next = queue.removeFirst() // 2. (a) 큐에서 해당 노드를 꺼낸 뒤에
 
         answerBfs += "$next "
 
+        // 2. (b) 해당 노드의 인접 노드 중에서
         for(node in graph[next]) {
-            queue.add(node)
+            // 2. (c) 방문하지 않은 노드를 모두 큐에 삽입하고 방문 처리
+            if(!visited[node]) {
+                queue.add(node)
+                visited[node] = true
+            }
         }
     }
 }
