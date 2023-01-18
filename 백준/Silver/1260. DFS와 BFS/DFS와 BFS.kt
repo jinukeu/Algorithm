@@ -30,29 +30,28 @@ fun main(args: Array<String>) {
 }
 
 fun dfs(start: Int) {
-    if(visited[start]) return
-
-    visited[start] = true
+    visited[start] = true // 2-1. (c) 스택의 최상단 노드 방문 처리
     answerDfs += "$start "
 
+    // 2. 스택의 최상단 노드와 인접한 노드 탐색!
     for(next in graph[start]) {
-        dfs(next)
+        if(!visited[next])// 2-1. (a) 방문하지 않은 노드가 있다면?
+            dfs(next) // 2-1. (b) 해당 노드를 스택에 넣고
     }
 }
 
 fun bfs(start: Int) {
     val queue = ArrayDeque<Int>()
     queue.add(start)
-    visited[start] = true
 
     while (queue.isNotEmpty()) {
         val next = queue.removeFirst()
+        if(visited[next]) continue
+        visited[next] = true
 
         answerBfs += "$next "
 
         for(node in graph[next]) {
-            if(visited[node]) continue
-            visited[node] = true
             queue.add(node)
         }
     }
