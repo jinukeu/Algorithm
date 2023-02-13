@@ -1,7 +1,6 @@
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.*
-import kotlin.system.exitProcess
 
 
 private val br = BufferedReader(InputStreamReader(System.`in`))
@@ -26,16 +25,14 @@ fun main(args: Array<String>) {
     distance[start] = 0
 
     while (pq.isNotEmpty()) {
-        val curNode = pq.poll()
-        val dist = curNode.cost
-        val now = curNode.dest
-        if(distance[now] < dist) continue
+        val curNode = pq.poll() // 인접 노드 중 가장 거리가 짧은 노드를 꺼냄
+        if(distance[curNode.id] < curNode.cost) continue
 
-        for(nextNode in graph[now]) {
-            val cost = dist + nextNode.cost
-            if(cost < distance[nextNode.dest]) {
-                distance[nextNode.dest] = cost
-                pq.add(Node(nextNode.dest, cost))
+        for(adjNode in graph[curNode.id]) {
+            val cost = curNode.cost + adjNode.cost // 현재 노드를 거쳐서 인접 노드로 가는 비용
+            if(cost < distance[adjNode.id]) { // 현재 노드를 거쳐서 인접 노드로 가는 비용이 기존 보다 더 빠르다면 
+                distance[adjNode.id] = cost // 갱신
+                pq.add(Node(adjNode.id, cost)) // 인접 노드를 queue에 넣어줌
             }
         }
     }
@@ -44,7 +41,7 @@ fun main(args: Array<String>) {
 }
 
 data class Node(
-    val dest: Int,
+    val id: Int,
     val cost: Int
 ) : Comparable<Node> {
     override fun compareTo(other: Node): Int {
