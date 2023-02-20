@@ -1,5 +1,3 @@
-import heapq
-
 v, e = map(int,input().split())
 graph = [[1e9] * (v + 1) for _ in range(v + 1)]
 
@@ -27,4 +25,3 @@ if ans == 1e9:
     print(-1)
 else:
     print(ans)
-        
