@@ -1,3 +1,4 @@
+import sun.reflect.generics.tree.Tree
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.Collections
@@ -7,20 +8,27 @@ import java.util.TreeMap
 
 private val br = BufferedReader(InputStreamReader(System.`in`))
 
+fun TreeMap<Int, TreeMap<Int, Int>>.addQuestion(level: Int, questionNum: Int) {
+    if (this.containsKey(level)) {
+        val questionList = this[level]!!
+        questionList[questionNum] = 0
+    } else {
+        val questionList = TreeMap<Int, Int>()
+        questionList[questionNum] = 0
+        this[level] = questionList
+    }
+}
+
+fun <T> TreeMap<Int, T>.getKey(input: String): Int {
+    return if (input == "1") this.lastKey() else this.firstKey()
+}
+
 fun main(args: Array<String>) {
-    //key가 난이도
     val treeMap = TreeMap<Int, TreeMap<Int, Int>>()
     val n = br.readLine().toInt()
     repeat(n) {
         val (questionNum, level) = br.readLine().split(" ").map { it.toInt() }
-        if (treeMap.containsKey(level)) {
-            val questionList = treeMap[level]!!
-            questionList[questionNum] = 0
-        } else {
-            val questionList = TreeMap<Int, Int>()
-            questionList[questionNum] = 0
-            treeMap[level] = questionList
-        }
+        treeMap.addQuestion(level, questionNum)
     }
 
     val m = br.readLine().toInt()
@@ -33,29 +41,20 @@ fun main(args: Array<String>) {
             "add" -> {
                 val questionNum = input[1].toInt()
                 val level = input[2].toInt()
-
-                if (treeMap.containsKey(level)) {
-                    val questionList = treeMap[level]!!
-                    questionList[questionNum] = 0
-                } else {
-                    val questionList = TreeMap<Int, Int>()
-                    questionList[questionNum] = 0
-                    treeMap[level] = questionList
-                }
+                treeMap.addQuestion(level, questionNum)
             }
             "recommend" -> {
-                var key = if (input[1] == "1") treeMap.lastKey() else treeMap.firstKey()
+                var key = treeMap.getKey(input[1])
                 var questionList = treeMap[key]!!
 
                 while (true) {
-//                    println("D: $questionList")
-                    val question = if (input[1] == "1") questionList.lastKey() else questionList.firstKey()
+                    val question = questionList.getKey(input[1])
                     if (question in solved) {
                         questionList.remove(question)
                         solved.remove(question)
                         if(questionList.isEmpty()) {
                             treeMap.remove(key)
-                            key = if (input[1] == "1") treeMap.lastKey() else treeMap.firstKey()
+                            key = treeMap.getKey(input[1])
                             questionList = treeMap[key]!!
                         }
                     }
