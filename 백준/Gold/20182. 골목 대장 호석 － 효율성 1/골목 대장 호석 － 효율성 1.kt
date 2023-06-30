@@ -11,7 +11,7 @@ import kotlin.math.pow
 val br = BufferedReader(InputStreamReader(System.`in`))
 val bw = BufferedWriter(OutputStreamWriter(System.out))
 
-val MAX_VALUE = 100
+val MAX_VALUE = 21
 
 fun main() {
     val (n, m, a, b, c) = br.readLine().split(" ").map { it.toInt() }
@@ -43,9 +43,8 @@ fun main() {
         for(next in graph[now]) {
             val minFee = max(next.cost, fees[now])
             if(remain - next.cost >= 0 && fees[next.to] > minFee) {
-                fees[next.to] = min(minFee, fees[next.to])
+                fees[next.to] = minFee
                 pq.add(Node(next.to, next.cost, remain - next.cost))
-//                println("$now -> ${next.to}")
             }
         }
     }
